@@ -732,10 +732,8 @@ void CalendarWindow::openAbout()
     m_aboutDialog->setName(tr("Calendar"));
     m_aboutDialog->setDescription(tr("Keeps track of your events."));
     m_aboutDialog->setIconSource("office-calendar");
-    m_aboutDialog->setLink("https://github.com/cutefishos/calendar");
     m_aboutDialog->onClosed = [this] { deleteLater(m_aboutDialog); };
     m_aboutDialog->show();
-    m_aboutDialog->window()->addShortcut(NoModifier, key::Escape, [this] { m_aboutDialog->close(); });
 }
 
 void CalendarWindow::showPassiveNotification(const std::string& text, int timeout, const std::string& actionText,
