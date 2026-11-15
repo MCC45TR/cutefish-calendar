@@ -1,0 +1,661 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cutefish-calendar\n"
+"Report-Msgid-Bugs-To: https://github.com/cutefishos\n"
+"POT-Creation-Date: 2026-10-31 15:53+0800\n"
+"PO-Revision-Date: 2026-10-31 15:53+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: src/calendarmodel.cpp
+msgid "Personal"
+msgstr "Osobní"
+
+#: src/calendarmodel.cpp
+msgid "Undo New Event"
+msgstr "Zpět: nová událost"
+
+#: src/calendarmodel.cpp
+msgid "Undo Edit"
+msgstr "Zpět: úprava"
+
+#: src/calendarmodel.cpp
+msgid "Undo Delete"
+msgstr "Zpět: smazání"
+
+#: src/calendarmodel.cpp
+msgid "Undo Move"
+msgstr "Zpět: přesun"
+
+#: src/reminderservice.cpp
+msgid "Today, all day"
+msgstr "Dnes, celý den"
+
+#: src/reminderservice.cpp
+msgid "Tomorrow, all day"
+msgstr "Zítra, celý den"
+
+#. TRANSLATORS: a time range, such as "9:00 – 10:00".
+#: src/reminderservice.cpp src/ui/eventviews.cpp src/ui/timegridview.cpp
+#, python-brace-format
+msgid "{start} – {end}"
+msgstr "{start} – {end}"
+
+#: src/reminderservice.cpp
+#, python-brace-format
+msgid "Tomorrow, {time}"
+msgstr "Zítra, {time}"
+
+#. TRANSLATORS: a reminder's date and time, such as "Wednesday, 7 October, 9:00 – 10:00".
+#: src/reminderservice.cpp
+#, python-brace-format
+msgid "{date}, {time}"
+msgstr "{date}, {time}"
+
+#: src/reminderservice.cpp
+#, python-brace-format
+msgid "Snooze {n} Minute"
+msgid_plural "Snooze {n} Minutes"
+msgstr[0] "Odložit o {n} minutu"
+msgstr[1] "Odložit o {n} minuty"
+msgstr[2] "Odložit o {n} minut"
+
+#: src/reminderservice.cpp src/ui/calendarwindow.cpp src/ui/eventdialog.cpp
+#: src/ui/eventviews.cpp src/ui/searchresults.cpp
+msgid "New Event"
+msgstr "Nová událost"
+
+#: src/subscriptions.cpp
+msgid "The calendar could not be reached."
+msgstr "Kalendář není dostupný."
+
+#: src/subscriptions.cpp
+#, python-brace-format
+msgid "The server answered with error {status}."
+msgstr "Server odpověděl chybou {status}."
+
+#: src/subscriptions.cpp
+msgid "There is no calendar at this address."
+msgstr "Na této adrese není žádný kalendář."
+
+#: src/subscriptions.cpp src/ui/dialogs.cpp
+msgid "This is not a web address."
+msgstr "Toto není webová adresa."
+
+#: src/subscriptions.cpp
+msgid "The calendar could not be read."
+msgstr "Kalendář nelze přečíst."
+
+#: src/subscriptions.cpp
+msgid "The calendar could not be saved."
+msgstr "Kalendář nelze uložit."
+
+#: src/subscriptions.cpp
+msgid "This calendar is not a subscription."
+msgstr "Tento kalendář není odběr."
+
+#: src/ui/calendarwindow.cpp src/ui/eventdialog.cpp cutefish-calendar.desktop
+msgid "Calendar"
+msgstr "Kalendář"
+
+#: src/ui/calendarwindow.cpp
+msgid "Save changes to this repeating event?"
+msgstr "Uložit změny této opakované události?"
+
+#: src/ui/calendarwindow.cpp
+msgid "The new repeat applies to this and the following events."
+msgstr "Nové opakování platí pro tuto a všechny následující události."
+
+#: src/ui/calendarwindow.cpp
+msgid "Change only this event, or this and the events after it?"
+msgstr "Změnit jen tuto událost, nebo i všechny následující?"
+
+#: src/ui/calendarwindow.cpp
+msgid "Only This Event"
+msgstr "Jen tuto událost"
+
+#: src/ui/calendarwindow.cpp
+msgid "All Events"
+msgstr "Všechny události"
+
+#: src/ui/calendarwindow.cpp
+msgid "All Future Events"
+msgstr "Všechny budoucí události"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "“{title}” deleted"
+msgstr "Událost „{title}“ smazána"
+
+#: src/ui/calendarwindow.cpp
+msgid "Undo"
+msgstr "Zpět"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "Delete “{title}”?"
+msgstr "Smazat „{title}“?"
+
+#: src/ui/calendarwindow.cpp
+msgid "This is a repeating event."
+msgstr "Toto je opakovaná událost."
+
+#: src/ui/calendarwindow.cpp
+msgid "Move this repeating event?"
+msgstr "Přesunout tuto opakovanou událost?"
+
+#: src/ui/calendarwindow.cpp
+msgid "Move only this event, or this and the events after it?"
+msgstr "Přesunout jen tuto událost, nebo i všechny následující?"
+
+#: src/ui/calendarwindow.cpp
+msgid "Show Details…"
+msgstr "Zobrazit podrobnosti…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Edit…"
+msgstr "Upravit…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/ui/calendarwindow.cpp
+msgid "New All-Day Event"
+msgstr "Nová celodenní událost"
+
+#: src/ui/calendarwindow.cpp
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: src/ui/calendarwindow.cpp
+msgid "Export…"
+msgstr "Exportovat…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Unsubscribe…"
+msgstr "Zrušit odběr…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Delete…"
+msgstr "Smazat…"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "Subscribed to “{name}”"
+msgstr "Přihlášen odběr kalendáře „{name}“"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "“{name}” could not be refreshed. {error}"
+msgstr "Kalendář „{name}“ nelze obnovit. {error}"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "Unsubscribe from “{name}”?"
+msgstr "Zrušit odběr kalendáře „{name}“?"
+
+#: src/ui/calendarwindow.cpp
+msgid "Its events are removed from this computer."
+msgstr "Jeho události budou z tohoto počítače odstraněny."
+
+#: src/ui/calendarwindow.cpp
+msgid "Unsubscribe"
+msgstr "Zrušit odběr"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "Delete “{name}”?"
+msgstr "Smazat „{name}“?"
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "Its event is moved to the trash."
+msgid_plural "Its {n} events are moved to the trash."
+msgstr[0] "Jeho událost bude přesunuta do koše."
+msgstr[1] "Jeho {n} události budou přesunuty do koše."
+msgstr[2] "Jeho {n} událostí bude přesunuto do koše."
+
+#: src/ui/calendarwindow.cpp
+msgid "Export"
+msgstr "Exportovat"
+
+#. TRANSLATORS: keep the ASCII parentheses and the pattern in them unchanged.
+#: src/ui/calendarwindow.cpp
+msgid "Calendar files (*.ics)"
+msgstr "Soubory kalendáře (*.ics)"
+
+#: src/ui/calendarwindow.cpp
+msgid "The calendar could not be exported."
+msgstr "Kalendář nelze exportovat."
+
+#: src/ui/calendarwindow.cpp
+msgid "No events could be read from the file."
+msgstr "Ze souboru nelze načíst žádné události."
+
+#: src/ui/calendarwindow.cpp
+#, python-brace-format
+msgid "{n} event imported"
+msgid_plural "{n} events imported"
+msgstr[0] "Importována {n} událost"
+msgstr[1] "Importovány {n} události"
+msgstr[2] "Importováno {n} událostí"
+
+#: src/ui/calendarwindow.cpp src/ui/dialogs.cpp
+msgid "Import"
+msgstr "Importovat"
+
+#. TRANSLATORS: keep the ASCII parentheses and the pattern in them unchanged.
+#: src/ui/calendarwindow.cpp
+msgid "All files (*)"
+msgstr "Všechny soubory (*)"
+
+#: src/ui/calendarwindow.cpp
+msgid "Keeps track of your events."
+msgstr "Udržuje přehled o vašich událostech."
+
+#: src/ui/calendarwindow.cpp
+msgid "About Calendar"
+msgstr "O aplikaci Kalendář"
+
+#: src/ui/calendarwindow.cpp
+msgid "Settings…"
+msgstr "Nastavení…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Hide Calendar"
+msgstr "Skrýt Kalendář"
+
+#: src/ui/calendarwindow.cpp
+msgid "Quit Calendar"
+msgstr "Ukončit Kalendář"
+
+#: src/ui/calendarwindow.cpp
+msgid "File"
+msgstr "Soubor"
+
+#: src/ui/calendarwindow.cpp
+msgid "New Calendar…"
+msgstr "Nový kalendář…"
+
+#: src/ui/calendarwindow.cpp
+msgid "New Subscription…"
+msgstr "Nový odběr…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Import…"
+msgstr "Importovat…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Edit"
+msgstr "Úpravy"
+
+#: src/ui/calendarwindow.cpp
+msgid "Edit Event…"
+msgstr "Upravit událost…"
+
+#: src/ui/calendarwindow.cpp
+msgid "Find"
+msgstr "Najít"
+
+#: src/ui/calendarwindow.cpp
+msgid "View"
+msgstr "Zobrazení"
+
+#: src/ui/calendarwindow.cpp src/ui/headerbar.cpp
+msgid "Day"
+msgstr "Den"
+
+#: src/ui/calendarwindow.cpp src/ui/headerbar.cpp
+msgid "Week"
+msgstr "Týden"
+
+#: src/ui/calendarwindow.cpp src/ui/headerbar.cpp
+msgid "Month"
+msgstr "Měsíc"
+
+#: src/ui/calendarwindow.cpp src/ui/headerbar.cpp
+msgid "Year"
+msgstr "Rok"
+
+#: src/ui/calendarwindow.cpp
+msgid "Hide Sidebar"
+msgstr "Skrýt postranní panel"
+
+#: src/ui/calendarwindow.cpp
+msgid "Go to Today"
+msgstr "Přejít na dnešek"
+
+#: src/ui/calendarwindow.cpp
+msgid "Previous"
+msgstr "Předchozí"
+
+#: src/ui/calendarwindow.cpp
+msgid "Next"
+msgstr "Další"
+
+#: src/ui/calendarwindow.cpp
+msgid "Show Sidebar"
+msgstr "Zobrazit postranní panel"
+
+#: src/ui/calendarwindow.cpp
+msgid "Window"
+msgstr "Okno"
+
+#: src/ui/calendarwindow.cpp
+msgid "Minimize"
+msgstr "Minimalizovat"
+
+#: src/ui/calendarwindow.cpp
+msgid "Zoom"
+msgstr "Zvětšit"
+
+#: src/ui/dialogs.cpp src/ui/eventdialog.cpp
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/ui/dialogs.cpp
+msgid "Edit Calendar"
+msgstr "Upravit kalendář"
+
+#: src/ui/dialogs.cpp
+msgid "New Calendar"
+msgstr "Nový kalendář"
+
+#: src/ui/dialogs.cpp
+msgid "Name"
+msgstr "Název"
+
+#: src/ui/dialogs.cpp src/ui/eventdialog.cpp
+msgid "Save"
+msgstr "Uložit"
+
+#: src/ui/dialogs.cpp
+msgid "Create"
+msgstr "Vytvořit"
+
+#: src/ui/dialogs.cpp
+msgid "Public Holidays"
+msgstr "Státní svátky"
+
+#: src/ui/dialogs.cpp
+msgid "New Subscription"
+msgstr "Nový odběr"
+
+#: src/ui/dialogs.cpp
+msgid "A calendar published on the web, such as public holidays. It is kept up to date and cannot be edited."
+msgstr "Kalendář zveřejněný na webu, například se státními svátky. Průběžně se aktualizuje a nelze ho upravovat."
+
+#: src/ui/dialogs.cpp
+msgid "webcal:// or https:// address"
+msgstr "Adresa webcal:// nebo https://"
+
+#: src/ui/dialogs.cpp
+msgid "Subscribe"
+msgstr "Odebírat"
+
+#: src/ui/dialogs.cpp
+msgid "Subscribing…"
+msgstr "Přihlašování odběru…"
+
+#: src/ui/dialogs.cpp
+msgid "Import Events"
+msgstr "Importovat události"
+
+#: src/ui/dialogs.cpp
+#, python-brace-format
+msgid "{n} file"
+msgid_plural "{n} files"
+msgstr[0] "{n} soubor"
+msgstr[1] "{n} soubory"
+msgstr[2] "{n} souborů"
+
+#: src/ui/dialogs.cpp
+msgid "Add to"
+msgstr "Přidat do"
+
+#: src/ui/dialogs.cpp
+msgid "Settings"
+msgstr "Nastavení"
+
+#: src/ui/dialogs.cpp
+msgid "System Default"
+msgstr "Výchozí nastavení systému"
+
+#: src/ui/dialogs.cpp
+msgid "Week Starts On"
+msgstr "Začátek týdne"
+
+#: src/ui/dialogs.cpp
+msgid "Show Week Numbers"
+msgstr "Zobrazovat čísla týdnů"
+
+#: src/ui/eventdialog.cpp
+msgid "Event"
+msgstr "Událost"
+
+#: src/ui/eventdialog.cpp
+msgid "Edit Event"
+msgstr "Upravit událost"
+
+#: src/ui/eventdialog.cpp
+msgid "Title"
+msgstr "Název"
+
+#: src/ui/eventdialog.cpp
+msgid "Location"
+msgstr "Místo"
+
+#: src/ui/eventdialog.cpp
+msgid "All Day"
+msgstr "Celý den"
+
+#: src/ui/eventdialog.cpp
+msgid "Starts"
+msgstr "Začátek"
+
+#: src/ui/eventdialog.cpp
+msgid "Ends"
+msgstr "Konec"
+
+#: src/ui/eventdialog.cpp
+msgid "The event ends before it starts."
+msgstr "Událost končí dřív, než začíná."
+
+#: src/ui/eventdialog.cpp
+msgid "Never"
+msgstr "Nikdy"
+
+#: src/ui/eventdialog.cpp
+msgid "Every Day"
+msgstr "Každý den"
+
+#: src/ui/eventdialog.cpp
+msgid "Every Weekday"
+msgstr "Každý pracovní den"
+
+#: src/ui/eventdialog.cpp
+msgid "Every Week"
+msgstr "Každý týden"
+
+#: src/ui/eventdialog.cpp
+msgid "Every Month"
+msgstr "Každý měsíc"
+
+#: src/ui/eventdialog.cpp
+msgid "Every Year"
+msgstr "Každý rok"
+
+#: src/ui/eventdialog.cpp
+msgid "Custom"
+msgstr "Vlastní"
+
+#: src/ui/eventdialog.cpp
+msgid "Repeat"
+msgstr "Opakovat"
+
+#: src/ui/eventdialog.cpp
+msgid "End Repeat"
+msgstr "Konec opakování"
+
+#: src/ui/eventdialog.cpp
+msgid "On Date"
+msgstr "K datu"
+
+#. TRANSLATORS: as in "After 3 times".
+#: src/ui/eventdialog.cpp
+msgid "After"
+msgstr "Po"
+
+#: src/ui/eventdialog.cpp
+msgid "Alert"
+msgstr "Upozornění"
+
+#: src/ui/eventdialog.cpp
+msgid "Notes"
+msgstr "Poznámky"
+
+#: src/ui/eventdialog.cpp
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/ui/eventdialog.cpp
+msgid "Delete Event"
+msgstr "Smazat událost"
+
+#: src/ui/eventdialog.cpp
+msgid "Add"
+msgstr "Přidat"
+
+#: src/ui/eventdialog.cpp
+msgid "None"
+msgstr "Žádné"
+
+#: src/ui/eventdialog.cpp
+msgid "On the Day (9:00)"
+msgstr "V den události (9:00)"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Day Before (9:00)"
+msgid_plural "{n} Days Before (9:00)"
+msgstr[0] "{n} den předem (9:00)"
+msgstr[1] "{n} dny předem (9:00)"
+msgstr[2] "{n} dní předem (9:00)"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Week Before (9:00)"
+msgid_plural "{n} Weeks Before (9:00)"
+msgstr[0] "{n} týden předem (9:00)"
+msgstr[1] "{n} týdny předem (9:00)"
+msgstr[2] "{n} týdnů předem (9:00)"
+
+#: src/ui/eventdialog.cpp
+msgid "At Time of Event"
+msgstr "V čase události"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Minute Before"
+msgid_plural "{n} Minutes Before"
+msgstr[0] "{n} minutu předem"
+msgstr[1] "{n} minuty předem"
+msgstr[2] "{n} minut předem"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Hour Before"
+msgid_plural "{n} Hours Before"
+msgstr[0] "{n} hodinu předem"
+msgstr[1] "{n} hodiny předem"
+msgstr[2] "{n} hodin předem"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Day Before"
+msgid_plural "{n} Days Before"
+msgstr[0] "{n} den předem"
+msgstr[1] "{n} dny předem"
+msgstr[2] "{n} dní předem"
+
+#: src/ui/eventdialog.cpp
+#, python-brace-format
+msgid "{n} Week Before"
+msgid_plural "{n} Weeks Before"
+msgstr[0] "{n} týden předem"
+msgstr[1] "{n} týdny předem"
+msgstr[2] "{n} týdnů předem"
+
+#. TRANSLATORS: after "After" and a number field, as in "After 3 times".
+#: src/ui/eventdialog.cpp
+msgid "time"
+msgid_plural "times"
+msgstr[0] "opakování"
+msgstr[1] "opakováních"
+msgstr[2] "opakováních"
+
+#. TRANSLATORS: the events of a day that do not fit in it, as in "3 more".
+#: src/ui/eventviews.cpp
+#, python-brace-format
+msgid "{n} more"
+msgid_plural "{n} more"
+msgstr[0] "{n} další"
+msgstr[1] "{n} další"
+msgstr[2] "{n} dalších"
+
+#. TRANSLATORS: an event that began on an earlier day, such as "until 10:00".
+#: src/ui/eventviews.cpp
+#, python-brace-format
+msgid "until {time}"
+msgstr "do {time}"
+
+#: src/ui/headerbar.cpp
+msgid "Search events"
+msgstr "Hledat události"
+
+#: src/ui/headerbar.cpp src/ui/searchresults.cpp
+msgid "Today"
+msgstr "Dnes"
+
+#: src/ui/searchresults.cpp
+msgid "All day"
+msgstr "Celý den"
+
+#: src/ui/searchresults.cpp
+msgid "Tomorrow"
+msgstr "Zítra"
+
+#: src/ui/searchresults.cpp
+msgid "No Events Found"
+msgstr "Nenalezeny žádné události"
+
+#: src/ui/sidebar.cpp
+msgid "Calendars"
+msgstr "Kalendáře"
+
+#: src/ui/sidebar.cpp
+msgid "Subscriptions"
+msgstr "Odběry"
+
+#. TRANSLATORS: the label of the all-day row in the day and week views, in a narrow column beside it.
+#: src/ui/timegridview.cpp
+msgid "all-day"
+msgstr "celý den"
+
+#: cutefish-calendar.desktop
+msgid "Keep track of events and appointments"
+msgstr "Sledujte události a schůzky"
+
+#: cutefish-calendar.desktop
+msgid "Events;Appointments;Schedule;Date;"
+msgstr "Události;Schůzky;Rozvrh;Plán;Datum;Kalendář;"
+
+#: cutefish-calendar-reminders.desktop
+msgid "Calendar Reminders"
+msgstr "Připomínky kalendáře"
