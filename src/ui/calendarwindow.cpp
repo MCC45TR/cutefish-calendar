@@ -50,7 +50,7 @@ CalendarWindow::CalendarWindow(CalendarModel* model, bool restoresSize)
     , m_currentDate(model->today())
 {
     m_window->setMinimumSize({640, 600});
-    m_window->resize({1100, 740});
+    m_window->resize({911, 600});
     if (restoresSize)
         m_window->setRestoresSize("Main");
     m_wasNarrow = narrow();
