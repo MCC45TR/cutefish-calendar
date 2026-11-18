@@ -12,6 +12,7 @@
 
 namespace cutefish::ui {
 class HeaderButton;
+class HeaderButtonGroup;
 class Icon;
 class Label;
 class SearchField;
@@ -68,6 +69,7 @@ protected:
 private:
     CalendarWindow* m_window;
     cutefish::ui::Label* m_title;
+    cutefish::ui::HeaderButtonGroup* m_sidebarGroup;
     cutefish::ui::HeaderButton* m_sidebarButton;
     cutefish::ui::SegmentedControl* m_viewSwitch;
     cutefish::ui::SearchField* m_search;

@@ -7,6 +7,7 @@
 
 #include <base/i18n.h>
 #include <ui/header_button.h>
+#include <ui/header_button_group.h>
 #include <ui/icon.h>
 #include <ui/label.h>
 #include <ui/painter.h>
@@ -93,7 +94,8 @@ void NavigationButton::pointerRelease(const PointerEvent& event)
 HeaderBar::HeaderBar(CalendarWindow* window)
     : m_window(window)
     , m_title(addChild<Label>())
-    , m_sidebarButton(addChild<HeaderButton>(std::string(), ButtonSize))
+    , m_sidebarGroup(addChild<HeaderButtonGroup>())
+    , m_sidebarButton(m_sidebarGroup->addButton("sidebar", 24))
     , m_viewSwitch(addChild<SegmentedControl>(std::vector<std::string>{tr("Day"), tr("Week"), tr("Month"), tr("Year")}))
     , m_search(addChild<SearchField>(tr("Search events")))
 {
@@ -103,7 +105,6 @@ HeaderBar::HeaderBar(CalendarWindow* window)
     m_title->setBaseline(CalendarWindow::HeaderBaseline);
     m_title->setVisible(false);
     m_sidebarButton->setName("sidebarButton");
-    m_sidebarButton->setGlyph("sidebar", 24);
     m_sidebarButton->onClicked = [window] { window->toggleSidebar(); };
     m_viewSwitch->setName("viewSwitch");
     m_viewSwitch->setFontSize(Style::points(9));
@@ -143,7 +144,10 @@ void HeaderBar::layout()
     const double inset = header ? header->leadingInset() : 0;
     double x = docked ? CalendarWindow::SidebarWidth - 12 - ButtonSize : inset + 11;
     m_sidebarButton->setChecked(overlay);
-    m_sidebarButton->setGeometry({x, top, ButtonSize, ButtonSize});
+    // The plate keeps the glyph where the button's own plate had it.
+    const double plate = HeaderButtonGroup::kSegment;
+    const double plateInset = (ButtonSize - plate) / 2;
+    m_sidebarGroup->setGeometry({x + plateInset, top + plateInset, plate, plate});
     const double startEnd = x + ButtonSize;
 
     // As far from the end as from the top, in the whole device pixels both
