@@ -23,6 +23,10 @@ using namespace cutefish::ui;
 using cutefish::i18n::tr;
 
 static constexpr double ButtonSize = 32;
+// The narrowest the view switch gets.
+static constexpr double SwitchWidth = 240;
+// The view switch and the search field are one height.
+static constexpr double ControlHeight = 30;
 static const std::vector<std::string> Views{"day", "week", "month", "year"};
 
 NavigationButton::NavigationButton(std::string icon, std::string text)
@@ -100,19 +104,19 @@ HeaderBar::HeaderBar(CalendarWindow* window)
     , m_search(addChild<SearchField>(tr("Search events")))
 {
     // Never shown: the window buttons centre on its capitals.
-    m_title->setName("buttonsMetrics");
+    m_title->setName("header:buttonsMetrics");
     m_title->setFontSize(Style::points(11));
     m_title->setBaseline(CalendarWindow::HeaderBaseline);
     m_title->setVisible(false);
-    m_sidebarButton->setName("sidebarButton");
+    m_sidebarButton->setName("header:sidebar");
     m_sidebarButton->onClicked = [window] { window->toggleSidebar(); };
-    m_viewSwitch->setName("viewSwitch");
+    m_viewSwitch->setName("header:viewSwitch");
     m_viewSwitch->setFontSize(Style::points(9));
     m_viewSwitch->onCurrentChanged = [window](int index) {
         if (index >= 0 && index < int(Views.size()) && Views[size_t(index)] != window->view())
             window->setView(Views[size_t(index)]);
     };
-    m_search->setName("searchField");
+    m_search->setName("header:search");
     m_search->setFontSize(Style::points(9));
     m_search->onTextChanged = [this] {
         if (onSearchChanged)
@@ -137,13 +141,11 @@ void HeaderBar::layout()
     const double windowWidth = window ? window->size().width : geometry().width;
     const double top = buttonsTopMargin();
     const bool docked = m_window->sidebarDocked();
-    const bool overlay = m_window->sidebarOverlay();
 
     // The toggle ends at the sidebar's edge, or follows the window buttons.
     const WindowHeader* header = dynamic_cast<const WindowHeader*>(parent());
     const double inset = header ? header->leadingInset() : 0;
     double x = docked ? CalendarWindow::SidebarWidth - 12 - ButtonSize : inset + 11;
-    m_sidebarButton->setChecked(overlay);
     // The plate keeps the glyph where the button's own plate had it.
     const double plate = HeaderButtonGroup::kSegment;
     const double plateInset = (ButtonSize - plate) / 2;
@@ -153,25 +155,26 @@ void HeaderBar::layout()
     // As far from the end as from the top, in the whole device pixels both
     // are drawn at: the window shows only whole ones of a fractional width.
     const double scale = window ? window->scale() : 1;
-    const double searchTop = top + (ButtonSize - 30) / 2;
+    const double searchTop = top + (ButtonSize - ControlHeight) / 2;
     double end = (std::floor(geometry().width * scale) - std::round(searchTop * scale)) / scale;
     const double searchWidth = windowWidth >= 1000 ? 220 : 160;
-    end -= searchWidth;
-    m_search->setGeometry({end, searchTop, searchWidth, 30});
+    // The search field goes when the view switch would have no room beside it.
+    const double start = startEnd + 12;
+    const bool searchFits = end - searchWidth - 12 - start >= SwitchWidth;
+    if (searchFits)
+        end -= searchWidth;
+    m_search->setGeometry({end, searchTop, searchWidth, ControlHeight});
     m_search->setFill(Style::controlTint());
     m_search->setGlyphColor(theme.disabledText);
-    m_search->setOpacity(overlay ? 0 : 1);
-    m_search->setEnabled(!overlay);
+    m_search->setVisible(searchFits);
 
     // Centred on the window, moved aside only as far as the buttons beside it need.
-    const double start = startEnd + 12;
     const double stop = end - 12;
-    const double width = std::max(240.0, std::min(300.0, stop - start));
+    const double width = std::max(SwitchWidth, std::min(300.0, stop - start));
     m_viewSwitch->setTrackColor(Style::controlTint());
-    m_viewSwitch->setVisible(!overlay);
     m_viewSwitch->setCurrentIndex(int(std::find(Views.begin(), Views.end(), m_window->view()) - Views.begin()));
     m_viewSwitch->setGeometry({std::max(start, std::min(stop - width, (windowWidth - width) / 2)),
-                               top + (ButtonSize - 36) / 2, width, 36});
+                               searchTop, width, ControlHeight});
 }
 
 NavigationRow::NavigationRow(CalendarWindow* window)
@@ -181,13 +184,13 @@ NavigationRow::NavigationRow(CalendarWindow* window)
     , m_today(addChild<NavigationButton>(std::string(), tr("Today")))
     , m_next(addChild<NavigationButton>("chevron-right"))
 {
-    m_title->setName("periodTitle");
+    m_title->setName("navigation:title");
     m_title->setFontSize(Style::points(18));
-    m_previous->setName("previousButton");
+    m_previous->setName("navigation:previous");
     m_previous->onClicked = [window] { window->step(-1); };
-    m_today->setName("todayButton");
+    m_today->setName("navigation:today");
     m_today->onClicked = [window] { window->goToday(); };
-    m_next->setName("nextButton");
+    m_next->setName("navigation:next");
     m_next->onClicked = [window] { window->step(1); };
 
     const auto update = [this] {

@@ -1,18 +1,28 @@
-add_executable(calendar-core-tests core_test.cpp)
-target_link_libraries(calendar-core-tests PRIVATE calendar-core GTest::gtest_main)
-add_test(NAME calendar_core COMMAND calendar-core-tests)
+include(GoogleTest)
 
-add_executable(calendar-ui-tests ui_test.cpp)
-target_link_libraries(calendar-ui-tests PRIVATE calendar-ui GTest::gtest)
-add_test(NAME calendar_ui COMMAND calendar-ui-tests)
+# The model alone: no toolkit, so no window can come in.
+add_executable(calendar-logic-tests
+    logic/main.cpp
+    logic/core_test.cpp
+    logic/reminders_test.cpp
+    ${PROJECT_SOURCE_DIR}/src/reminderservice.cpp
+)
+target_link_libraries(calendar-logic-tests PRIVATE calendar-core GTest::gtest)
+gtest_discover_tests(calendar-logic-tests PROPERTIES LABELS logic)
 
-add_executable(calendar-dialogs-tests dialogs_test.cpp)
-target_link_libraries(calendar-dialogs-tests PRIVATE calendar-ui GTest::gtest)
-add_test(NAME calendar_dialogs COMMAND calendar-dialogs-tests)
+add_executable(calendar-scenario-tests
+    scenarios/main.cpp
+    scenarios/calendars_test.cpp
+    scenarios/editor_test.cpp
+    scenarios/events_test.cpp
+    scenarios/views_test.cpp
+)
+target_link_libraries(calendar-scenario-tests PRIVATE calendar-ui GTest::gtest)
+gtest_discover_tests(calendar-scenario-tests PROPERTIES LABELS scenario)
 
-add_executable(calendar-capture capture.cpp)
+add_executable(calendar-layout-tests layout/layout_test.cpp)
+target_link_libraries(calendar-layout-tests PRIVATE calendar-ui GTest::gtest)
+gtest_discover_tests(calendar-layout-tests PROPERTIES LABELS layout)
+
+add_executable(calendar-capture layout/capture.cpp)
 target_link_libraries(calendar-capture PRIVATE calendar-ui)
-
-add_executable(calendar-reminders-tests reminders_test.cpp ${PROJECT_SOURCE_DIR}/src/reminderservice.cpp)
-target_link_libraries(calendar-reminders-tests PRIVATE calendar-core GTest::gtest_main)
-add_test(NAME calendar_reminders COMMAND calendar-reminders-tests)

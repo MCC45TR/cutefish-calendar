@@ -80,7 +80,7 @@ static TextField* plainField(FormCard* card, const std::string& text, const std:
     auto field = std::make_unique<TextField>(text);
     TextField* pointer = field.get();
     field->setPlaceholder(placeholder);
-    field->setName("formField");
+    field->setName("editor:field");
     field->setFrameVisible(false);
     field->setTextMargins(14, 14);
     card->addWide(std::move(field), 44);
@@ -97,8 +97,6 @@ EventDialog::EventDialog(Window* parent, CalendarModel* model, EventForm event)
     , m_event(std::move(event))
     , m_dialog(std::make_unique<DialogWindow>(parent, dialogTitle(m_event), 480))
 {
-    // Cancel or Close closes it.
-    m_dialog->setCloseVisible(false);
     m_allDay = m_event.allDay;
     m_startDate = m_event.start.date();
     m_endDate = m_event.end.date();
@@ -135,28 +133,28 @@ void EventDialog::buildContent()
 {
     // Layouts, which round sizes up and positions to whole pixels.
     auto content = std::make_unique<ColumnLayout>();
-    content->setName("eventDialog");
+    content->setName("editor:content");
     content->setSpacing(12);
-    content->setPadding({0, 0, 0, 8});
 
     FormCard* names = content->addChild<FormCard>();
     names->setLayoutHints({.fillWidth = true});
     m_title = plainField(names, m_event.title, tr("Title"));
-    m_title->setName("titleField");
+    m_title->setName("editor:title");
     m_title->setFontSize(Style::points(11));
     m_title->setFontWeight(500);
     auto separator = std::make_unique<View>();
     separator->setName("separator");
     names->addWide(std::move(separator), 0);
     m_location = plainField(names, m_event.location, tr("Location"));
-    m_location->setName("locationField");
+    m_location->setName("editor:location");
     m_title->onAccepted = [this] { save(); };
     m_location->onAccepted = [this] { save(); };
 
     FormCard* timing = content->addChild<FormCard>();
     timing->setLayoutHints({.fillWidth = true});
     m_allDaySwitch = timing->addRow(tr("All Day"))->addChild<Switch>();
-    m_allDaySwitch->setName("allDaySwitch");
+    m_allDaySwitch->setName("editor:allDay");
+    m_allDaySwitch->setPadding({8, 0, 0, 0});
     m_allDaySwitch->setChecked(m_allDay);
     m_allDaySwitch->onToggled = [this](bool checked) {
         m_allDay = checked;
@@ -166,21 +164,21 @@ void EventDialog::buildContent()
 
     View* starts = timing->addRow(tr("Starts"));
     m_startDateButton = starts->addChild<DateButton>(m_model, m_startDate);
-    m_startDateButton->setName("startDate");
+    m_startDateButton->setName("editor:startDate");
     m_startDateButton->onPicked = [this](Date date) { setStart(date, m_startMinute); };
     m_startTime = starts->addChild<ComboBox>(times());
-    m_startTime->setName("startTime");
+    m_startTime->setName("editor:startTime");
     setUpTimeBox(m_startTime, [this] { return m_startMinute; }, [this](int minute) { setStart(m_startDate, minute); });
 
     View* ends = timing->addRow(tr("Ends"));
     m_endDateButton = ends->addChild<DateButton>(m_model, m_endDate);
-    m_endDateButton->setName("endDate");
+    m_endDateButton->setName("editor:endDate");
     m_endDateButton->onPicked = [this](Date date) {
         m_endDate = date;
         update();
     };
     m_endTime = ends->addChild<ComboBox>(times());
-    m_endTime->setName("endTime");
+    m_endTime->setName("editor:endTime");
     setUpTimeBox(m_endTime, [this] { return m_endMinute; }, [this](int minute) {
         m_endMinute = minute;
         update();
@@ -202,7 +200,7 @@ void EventDialog::buildContent()
         m_repeatValues.push_back(Repeat::Custom);
     }
     m_repeatBox = m_repeatCard->addRow(tr("Repeat"))->addChild<ComboBox>(repeats);
-    m_repeatBox->setName("repeatBox");
+    m_repeatBox->setName("editor:repeat");
     m_repeatBox->setLayoutHints({.preferredWidth = 200});
     m_repeatBox->onActivated = [this](int index) {
         m_repeat = m_repeatValues[size_t(index)];
@@ -213,7 +211,7 @@ void EventDialog::buildContent()
     m_repeatEndBox = m_repeatEndRow->addChild<ComboBox>(std::vector<std::string>{tr("Never"), tr("On Date"),
                                                                                  // TRANSLATORS: as in "After 3 times".
                                                                                  tr("After")});
-    m_repeatEndBox->setName("repeatEndBox");
+    m_repeatEndBox->setName("editor:repeatEnd");
     m_repeatEndBox->onActivated = [this](int index) {
         m_repeatEnd = index;
         update();
@@ -224,7 +222,7 @@ void EventDialog::buildContent()
         update();
     };
     m_countField = m_repeatEndRow->addChild<TextField>(std::to_string(m_repeatCount));
-    m_countField->setName("repeatCountField");
+    m_countField->setName("editor:repeatCount");
     m_countField->setLayoutHints({.preferredWidth = 56});
     m_countField->setHorizontallyCentered(true);
     // As an integer validator from 1 to 999.
@@ -241,7 +239,7 @@ void EventDialog::buildContent()
     m_timesLabel = m_repeatEndRow->addChild<Label>();
 
     m_alarmBox = m_repeatCard->addRow(tr("Alert"))->addChild<ComboBox>();
-    m_alarmBox->setName("alarmBox");
+    m_alarmBox->setName("editor:alert");
     m_alarmBox->setLayoutHints({.preferredWidth = 200});
     m_alarmBox->onActivated = [this](int index) {
         m_alarmIndex = index;
@@ -257,7 +255,7 @@ void EventDialog::buildContent()
             calendarIndex = int(i);
     }
     m_calendarBox = m_repeatCard->addRow(tr("Calendar"))->addChild<ComboBox>(calendars);
-    m_calendarBox->setName("calendarBox");
+    m_calendarBox->setName("editor:calendar");
     m_calendarBox->setLayoutHints({.preferredWidth = 200});
     m_calendarBox->setCurrentIndex(calendarIndex);
 
@@ -265,16 +263,13 @@ void EventDialog::buildContent()
     notes->setLayoutHints({.fillWidth = true});
     auto notesArea = std::make_unique<TextArea>(m_event.notes);
     m_notes = notesArea.get();
-    m_notes->setName("notesField");
+    m_notes->setName("editor:notes");
     m_notes->setPlaceholder(tr("Notes"));
     m_notes->setWrapMode(TextArea::WrapMode::Wrap);
     m_notes->setFrameVisible(false);
     m_notes->setPadding({14, 12, 14, 12});
     notes->addWide(std::move(notesArea), 84);
 
-    RowLayout* actions = content->addChild<RowLayout>();
-    actions->setSpacing(8);
-    actions->setLayoutHints({.fillWidth = true, .margins = {0, 4, 0, 0}});
     if (m_event.readOnly) {
         // A subscription's event: shown as it is, with nothing to save.
         for (TextField* field : {m_title, m_location})
@@ -284,23 +279,21 @@ void EventDialog::buildContent()
                                                           m_endDateButton, m_endTime, m_repeatBox, m_repeatEndBox,
                                                           m_untilButton, m_countField, m_alarmBox, m_calendarBox})
             control->setEnabled(false);
+    } else {
+        RowLayout* actions = content->addChild<RowLayout>();
+        actions->setSpacing(8);
+        actions->setLayoutHints({.fillWidth = true, .margins = {0, 4, 0, 0}});
+        if (!isNew()) {
+            DialogButton* remove = actions->addChild<DialogButton>(tr("Delete Event"));
+            remove->setName("editor:delete");
+            remove->onClicked = [this] {
+                if (onDeleteRequested)
+                    onDeleteRequested();
+            };
+        }
         actions->addChild<View>()->setLayoutHints({.fillWidth = true});
-        DialogButton* done = actions->addChild<DialogButton>(tr("Close"), true);
-        done->setName("closeButton");
-        done->onClicked = [this] { close(); };
-    } else if (!isNew()) {
-        DialogButton* remove = actions->addChild<DialogButton>(tr("Delete Event"));
-        remove->setName("deleteButton");
-        remove->onClicked = [this] {
-            if (onDeleteRequested)
-                onDeleteRequested();
-        };
-    }
-    if (!m_event.readOnly) {
-        actions->addChild<View>()->setLayoutHints({.fillWidth = true});
-        actions->addChild<DialogButton>(tr("Cancel"))->onClicked = [this] { close(); };
         m_saveButton = actions->addChild<DialogButton>(isNew() ? tr("Add") : tr("Save"), true);
-        m_saveButton->setName("saveButton");
+        m_saveButton->setName("editor:save");
         m_saveButton->onClicked = [this] { save(); };
     }
 

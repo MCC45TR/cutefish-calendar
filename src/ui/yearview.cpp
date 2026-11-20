@@ -82,7 +82,7 @@ private:
 YearView::YearView(CalendarWindow* window)
     : m_window(window)
 {
-    setName("yearView");
+    setName("view:year");
     for (int month = 1; month <= 12; ++month) {
         m_titles.push_back(addChild<MonthTitle>(window, month));
         MiniMonth* mini = addChild<MiniMonth>(window->model());

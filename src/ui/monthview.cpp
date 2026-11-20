@@ -37,7 +37,7 @@ protected:
 MonthView::MonthView(CalendarWindow* window)
     : m_window(window)
 {
-    setName("monthView");
+    setName("view:month");
     for (int i = 0; i < 7; ++i) {
         Label* label = addChild<Label>();
         label->setFontSize(Style::points(9));
@@ -53,6 +53,7 @@ MonthView::MonthView(CalendarWindow* window)
     }
     for (int i = 0; i < 6; ++i) {
         Label* label = addChild<Label>();
+        label->setName("month:weekNumber");
         label->setFontSize(Style::points(8));
         label->setTextAlignment(Label::TextAlignment::Center);
         label->setVerticallyCentered(true);
@@ -226,8 +227,8 @@ void MonthView::layout()
         const bool isToday = i == today;
         label->setText(dayText(i));
         label->setWeight(isToday ? 600 : 400);
-        label->setColor(isToday ? theme.highlightedText : inMonth ? theme.text : theme.disabledText);
-        label->setOpacity(inMonth || isToday ? 1 : 0.6);
+        label->setColor(isToday ? theme.highlightedText : inMonth ? theme.text
+                        : Style::withAlpha(theme.disabledText, 0.6));
         // Centred on where the today plate would be, capitals on its middle.
         const SizeF size = label->sizeHint();
         const double cellRight = gutter + (i % 7 + 1) * cellWidth;

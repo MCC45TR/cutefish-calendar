@@ -173,8 +173,7 @@ void MiniMonth::layout()
         label->setFontSize(fontSize);
         label->setWeight(isToday || isSelected ? 600 : 400);
         label->setColor(isToday ? theme.highlightedText : isSelected ? theme.highlight
-                        : own ? theme.text : theme.disabledText);
-        label->setOpacity(own || isToday ? 1 : 0.6);
+                        : own ? theme.text : Style::withAlpha(theme.disabledText, 0.6));
         label->setVisible(m_showOutsideDays || own);
         label->setGeometry(cellRect(i));
     }
@@ -184,6 +183,8 @@ void MiniMonth::paint(Painter& painter)
 {
     const Theme& theme = Theme::current();
     const double plate = plateSize();
+    // The same whole device pixels both ways: edges rounded one by one can differ by one.
+    const int platePixels = std::max(1, int(std::round(plate * painter.scale())));
 
     // The shown range as one band per row, round at its ends.
     const int first = indexOf(m_rangeStart);
@@ -192,15 +193,21 @@ void MiniMonth::paint(Painter& painter)
         for (int start = first; start <= last; start = (start / 7 + 1) * 7) {
             const int end = std::min(last, start / 7 * 7 + 6);
             const RectF cell = cellRect(start);
-            const RectF band{cell.x + 2, cell.y + (m_cellHeight - plate) / 2, (end - start + 1) * cellWidth() - 4, plate};
-            painter.fillRoundedRect(band, plate / 2, color(CalendarColor::MiniMonthRange));
+            // On the device pixels a plate takes: a snapped shape starts a pixel lower.
+            Rect band = painter.deviceRect({cell.x + 2, cell.y + (m_cellHeight - plate) / 2,
+                                            (end - start + 1) * cellWidth() - 4, plate});
+            band.height = platePixels;
+            painter.fillDeviceRoundedRect(band, platePixels / 2.0, color(CalendarColor::MiniMonthRange));
         }
     }
 
     const auto platedCell = [&](int index, Color color) {
         const RectF cell = cellRect(index);
-        painter.fillEllipse({cell.x + (cell.width - plate) / 2, cell.y + (m_cellHeight - plate) / 2, plate, plate},
-                            color);
+        Rect circle = painter.deviceRect({cell.x + (cell.width - plate) / 2, cell.y + (m_cellHeight - plate) / 2,
+                                          plate, plate});
+        circle.width = platePixels;
+        circle.height = platePixels;
+        painter.fillDeviceRoundedRect(circle, platePixels / 2.0, color);
     };
     const int today = indexOf(m_model->today());
     const int selected = indexOf(m_selected);

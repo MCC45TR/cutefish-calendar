@@ -83,7 +83,7 @@ EventLine::EventLine(CalendarWindow* window, EventItem item)
     , m_title(addChild<Label>(titleOf(m_item)))
     , m_time(addChild<Label>(m_item.startText))
 {
-    setName("eventLine");
+    setName("event:line");
     m_pointer.setItem(&m_item);
     m_pointer.onDragMoved = [this](PointF point) {
         if (onDragMoved)
@@ -259,7 +259,7 @@ EventBlock::EventBlock(CalendarWindow* window, TimeGridView* grid, EventItem ite
     , m_item(std::move(item))
     , m_pointer(window, this)
 {
-    setName("eventBlock");
+    setName("event:block");
     View* column = addChild<View>();
     column->setClipsChildren(true);
     m_title = column->addChild<Label>();

@@ -30,8 +30,8 @@ CalendarContent::CalendarContent(CalendarWindow* window)
     , m_viewArea(addChild<View>())
     , m_search(addChild<SearchResults>(window))
 {
-    setName("keyTarget");
-    m_viewArea->setName("viewArea");
+    setName("calendar:content");
+    m_viewArea->setName("calendar:viewArea");
     m_viewArea->setClipsChildren(true);
     m_search->setVisible(false);
 
@@ -155,23 +155,9 @@ bool CalendarContent::keyPress(const KeyEvent& event)
     return false;
 }
 
-// Over the calendar the sidebar needs its own background and edge, title bar included.
-class CalendarRoot::OverlayBackground : public View
-{
-protected:
-    void paint(Painter& painter) override
-    {
-        const Theme& theme = Theme::current();
-        painter.fillRect(localRect(), theme.background);
-        painter.drawVerticalLine(geometry().width - 1 / painter.scale(), 0, geometry().height,
-                                 Style::withAlpha(theme.text, 0.1));
-    }
-};
-
 CalendarRoot::CalendarRoot(CalendarWindow* window)
     : m_window(window)
     , m_content(addChild<CalendarContent>(window))
-    , m_overlay(addChild<OverlayBackground>())
     , m_sidebar(addChild<Sidebar>(window))
     , m_header(addChild<WindowHeader>(CalendarWindow::HeaderHeight))
 {
@@ -198,10 +184,8 @@ void CalendarRoot::layout()
     m_sidebar->setVisible(m_window->sidebarReveal() > 0);
     m_sidebar->setGeometry({sidebarX, CalendarWindow::HeaderHeight, CalendarWindow::SidebarWidth,
                             std::max(0.0, height - CalendarWindow::HeaderHeight)});
-    m_overlay->setVisible(m_sidebar->isVisible() && !m_window->sidebarDocked());
-    m_overlay->setGeometry({sidebarX, 0, CalendarWindow::SidebarWidth, height});
 
-    const double contentX = CalendarWindow::SidebarWidth * m_window->dockReveal();
+    const double contentX = CalendarWindow::SidebarWidth * m_window->sidebarReveal();
     m_content->setGeometry({contentX, CalendarWindow::HeaderHeight, std::max(0.0, width - contentX),
                             std::max(0.0, height - CalendarWindow::HeaderHeight)});
 }
@@ -209,7 +193,7 @@ void CalendarRoot::layout()
 // The calendar's side of the window, title bar included; the sidebar keeps the window colour.
 void CalendarRoot::paint(Painter& painter)
 {
-    const double x = CalendarWindow::SidebarWidth * m_window->dockReveal();
+    const double x = CalendarWindow::SidebarWidth * m_window->sidebarReveal();
     painter.fillRect({x, 0, geometry().width - x, geometry().height}, Theme::current().secondBackground);
 }
 

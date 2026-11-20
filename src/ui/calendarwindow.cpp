@@ -49,38 +49,23 @@ CalendarWindow::CalendarWindow(CalendarModel* model, bool restoresSize)
     , m_window(std::make_unique<Window>())
     , m_currentDate(model->today())
 {
-    m_window->setMinimumSize({640, 600});
+    m_window->setMinimumSize({580, 500});
     m_window->resize({911, 600});
     if (restoresSize)
         m_window->setRestoresSize("Main");
     m_wasNarrow = narrow();
     m_sidebarReveal = sidebarDocked() ? 1 : 0;
-    m_dockReveal = sidebarDocked() ? 1 : 0;
 
     buildContent();
     m_toast = std::make_unique<Toast>(m_window.get());
     m_window->onStatesChanged = [this] { m_root->headerBar()->requestLayout(); };
     m_window->onActiveChanged = [this] { m_root->headerBar()->requestLayout(); };
-    // A press on the calendar puts away the sidebar shown over it.
-    m_window->onPointerPressed = [this](PointF position, MouseButton) {
-        const double sidebarEnd = SidebarWidth * m_sidebarReveal;
-        if (m_sidebarOverlay && position.y >= HeaderHeight && position.x >= sidebarEnd)
-            setSidebarOverlay(false);
-    };
 
     m_revealAnimation = std::make_unique<Animation>(m_window.get());
     m_revealAnimation->setDuration(std::chrono::milliseconds(200));
     m_revealAnimation->setEasing(Animation::Easing::OutCubic);
     m_revealAnimation->onUpdate = [this](double value) {
         m_sidebarReveal = m_revealFrom + (m_revealTo - m_revealFrom) * value;
-        m_root->requestLayout();
-        m_root->requestPaint();
-    };
-    m_dockAnimation = std::make_unique<Animation>(m_window.get());
-    m_dockAnimation->setDuration(std::chrono::milliseconds(200));
-    m_dockAnimation->setEasing(Animation::Easing::OutCubic);
-    m_dockAnimation->onUpdate = [this](double value) {
-        m_dockReveal = m_dockFrom + (m_dockTo - m_dockFrom) * value;
         m_root->requestLayout();
         m_root->requestPaint();
     };
@@ -264,20 +249,12 @@ std::vector<std::pair<std::string, bool>> CalendarWindow::periodTitle() const
 bool CalendarWindow::narrow() const
 {
     // Below this the sidebar leaves room for the calendar, and comes back above it.
-    return m_window->size().width < 900;
+    return m_window->size().width < DockWidth;
 }
 
 bool CalendarWindow::sidebarDocked() const
 {
-    return m_model->sidebarVisible() && !narrow();
-}
-
-void CalendarWindow::setSidebarOverlay(bool overlay)
-{
-    if (overlay == m_sidebarOverlay)
-        return;
-    m_sidebarOverlay = overlay;
-    updateSidebarState(true);
+    return m_model->sidebarVisible() && (!narrow() || m_sidebarKept);
 }
 
 void CalendarWindow::sizeChanged()
@@ -286,35 +263,23 @@ void CalendarWindow::sizeChanged()
     if (isNarrow == m_wasNarrow)
         return;
     m_wasNarrow = isNarrow;
-    m_sidebarOverlay = false;
+    m_sidebarKept = false;
     // Only a drag resize slides the sidebar; the size at startup or from the compositor just sets it.
     updateSidebarState(m_window->isInteractivelyResized());
 }
 
 void CalendarWindow::updateSidebarState(bool animate)
 {
-    const double reveal = sidebarDocked() || m_sidebarOverlay ? 1 : 0;
-    const double dock = sidebarDocked() ? 1 : 0;
+    const double reveal = sidebarDocked() ? 1 : 0;
     if (!animate) {
         m_revealAnimation->stop();
-        m_dockAnimation->stop();
         m_revealTo = reveal;
-        m_dockTo = dock;
         m_sidebarReveal = reveal;
-        m_dockReveal = dock;
-    } else {
-        if (reveal != m_revealTo || !m_revealAnimation->isRunning()) {
-            m_revealFrom = m_sidebarReveal;
-            m_revealTo = reveal;
-            if (m_revealFrom != m_revealTo)
-                m_revealAnimation->start();
-        }
-        if (dock != m_dockTo || !m_dockAnimation->isRunning()) {
-            m_dockFrom = m_dockReveal;
-            m_dockTo = dock;
-            if (m_dockFrom != m_dockTo)
-                m_dockAnimation->start();
-        }
+    } else if (reveal != m_revealTo || !m_revealAnimation->isRunning()) {
+        m_revealFrom = m_sidebarReveal;
+        m_revealTo = reveal;
+        if (m_revealFrom != m_revealTo)
+            m_revealAnimation->start();
     }
     m_root->requestLayout();
     m_root->requestPaint();
@@ -375,10 +340,34 @@ void CalendarWindow::showMonth(Date date)
 
 void CalendarWindow::toggleSidebar()
 {
-    if (narrow())
-        setSidebarOverlay(!m_sidebarOverlay);
-    else
+    if (!narrow()) {
         m_model->setSidebarVisible(!m_model->sidebarVisible());
+        return;
+    }
+    // Kept on a narrow window, it goes without the choice for a wide one changing.
+    if (sidebarDocked()) {
+        m_sidebarKept = false;
+        updateSidebarState(true);
+        return;
+    }
+    // A narrow window grows by the sidebar, the calendar keeping its width.
+    const SizeF size = m_window->size();
+    const double available = m_window->availableSize().width;
+    double width = std::max(size.width + SidebarWidth, DockWidth);
+    if (available > 0)
+        width = std::min(width, available);
+    // One that cannot get wide enough gives the sidebar some of the calendar's width.
+    const WindowStates& states = m_window->states();
+    if (states.maximized || states.fullScreen || states.tiled || width < DockWidth) {
+        m_sidebarKept = true;
+        m_model->setSidebarVisible(true);
+        updateSidebarState(true);
+        return;
+    }
+    m_window->resize({width, size.height});
+    m_wasNarrow = false;
+    m_model->setSidebarVisible(true);
+    updateSidebarState(false);
 }
 
 void CalendarWindow::focusView()
@@ -768,8 +757,6 @@ void CalendarWindow::installShortcuts()
             search->setText({});
             m_root->content()->setSearchText({});
             focusView();
-        } else if (m_sidebarOverlay) {
-            setSidebarOverlay(false);
         }
     });
 }
@@ -848,8 +835,7 @@ void CalendarWindow::buildMainMenu()
     viewMenu->onAboutToShow = [this, viewMenu, sidebar] {
         for (size_t i = 0; i < Views.size(); ++i)
             viewMenu->setItemChecked(i, Views[i] == view());
-        const bool shown = narrow() ? m_sidebarOverlay : m_model->sidebarVisible();
-        viewMenu->setItemText(sidebar, shown ? tr("Hide Sidebar") : tr("Show Sidebar"));
+        viewMenu->setItemText(sidebar, sidebarDocked() ? tr("Hide Sidebar") : tr("Show Sidebar"));
     };
 
     Menu* windowMenu = m_mainMenu->addSubmenu(tr("Window"));

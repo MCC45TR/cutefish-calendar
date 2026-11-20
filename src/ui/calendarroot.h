@@ -83,11 +83,9 @@ protected:
     void paint(cutefish::ui::Painter& painter) override;
 
 private:
-    class OverlayBackground;
 
     CalendarWindow* m_window;
     CalendarContent* m_content;
-    OverlayBackground* m_overlay;
     Sidebar* m_sidebar;
     cutefish::ui::WindowHeader* m_header;
     HeaderBar* m_headerBar;

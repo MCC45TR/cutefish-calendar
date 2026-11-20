@@ -61,6 +61,8 @@ public:
     cutefish::ui::Toast* toast() const { return m_toast.get(); }
 
     static constexpr double SidebarWidth = 240;
+    // The narrowest window that keeps the sidebar beside the calendar.
+    static constexpr double DockWidth = 900;
     static constexpr double HeaderHeight = 48;
     // The title and window buttons end on this line; content spacing is measured from it.
     static constexpr double HeaderBaseline = 28;
@@ -76,11 +78,8 @@ public:
 
     bool narrow() const;
     bool sidebarDocked() const;
-    bool sidebarOverlay() const { return m_sidebarOverlay; }
-    void setSidebarOverlay(bool overlay);
-    // 0 to 1 as the sidebar slides in, and as it docks.
+    // 0 to 1 as the sidebar slides in, the calendar making room for it.
     double sidebarReveal() const { return m_sidebarReveal; }
-    double dockReveal() const { return m_dockReveal; }
 
     bool isSelected(const EventItem& item) const;
     void selectEvent(const EventItem* item);
@@ -164,16 +163,13 @@ private:
     Date m_currentDate;
     std::string m_selectedKey;
     std::string m_selectedRecurrenceKey;
-    bool m_sidebarOverlay = false;
+    // Asked for on a narrow window that cannot grow.
+    bool m_sidebarKept = false;
     bool m_wasNarrow = false;
     double m_sidebarReveal = 0;
-    double m_dockReveal = 0;
     double m_revealFrom = 0;
     double m_revealTo = 0;
-    double m_dockFrom = 0;
-    double m_dockTo = 0;
     std::unique_ptr<cutefish::ui::Animation> m_revealAnimation;
-    std::unique_ptr<cutefish::ui::Animation> m_dockAnimation;
 
     std::unique_ptr<cutefish::ui::Menu> m_contextMenu;
     std::unique_ptr<EventDialog> m_editor;

@@ -78,11 +78,12 @@ public:
         , m_check(addChild<Icon>("check", 12))
         , m_name(addChild<Label>(m_calendar.name))
     {
+        setName(std::string(m_calendar.readOnly ? "subscriptions:" : "calendars:") + m_calendar.name);
         m_check->setColor(Color{255, 255, 255, 255});
     }
 
-    SizeF sizeHint() const override { return {0, 34}; }
-    double heightForWidth(double) const override { return 34; }
+    SizeF sizeHint() const override { return {0, 30}; }
+    double heightForWidth(double) const override { return 30; }
     bool acceptsPointer() const override { return true; }
 
 protected:
@@ -163,13 +164,13 @@ Sidebar::Sidebar(CalendarWindow* window)
     : m_window(window)
     , m_shownMonth(Dates::monthStart(window->currentDate()))
 {
-    setName("sidebar");
+    setName("sidebar:panel");
     Column* content = setContent<Column>();
     content->setMargins({12, 4, 12, 16});
     content->setSpacing(12);
 
     Card* monthCard = content->addChild<Card>(10, 14, 12, true);
-    monthCard->setName("miniMonth");
+    monthCard->setName("sidebar:month");
     monthCard->setLayoutHints({.fillWidth = true});
     // Layouts, which round sizes and positions to whole pixels.
     ColumnLayout* monthColumn = monthCard->addChild<ColumnLayout>();
@@ -183,14 +184,14 @@ Sidebar::Sidebar(CalendarWindow* window)
     m_monthLabel->setLayoutHints({.fillWidth = true, .margins = {4, 0, 0, 0}});
     RoundImageButton* previous = monthRow->addChild<RoundImageButton>("chevron-left", 24);
     previous->setIconSize(16);
-    previous->setName("miniPrevious");
+    previous->setName("sidebar:previousMonth");
     previous->onClicked = [this] {
         m_shownMonth = m_shownMonth.addMonths(-1);
         updateMonth();
     };
     RoundImageButton* next = monthRow->addChild<RoundImageButton>("chevron-right", 24);
     next->setIconSize(16);
-    next->setName("miniNext");
+    next->setName("sidebar:nextMonth");
     next->onClicked = [this] {
         m_shownMonth = m_shownMonth.addMonths(1);
         updateMonth();
@@ -200,24 +201,24 @@ Sidebar::Sidebar(CalendarWindow* window)
     m_miniMonth->onDayClicked = [window](Date date) { window->setCurrentDate(date); };
     m_miniMonth->onDayDoubleClicked = [window](Date date) { window->showDay(date); };
 
-    RowLayout* heading = addHeading(tr("Calendars"), "addCalendar");
-    heading->children()[0]->setName("calendarsHeading");
+    RowLayout* heading = addHeading(tr("Calendars"), "sidebar:addCalendar");
+    heading->children()[0]->setName("sidebar:calendarsHeading");
     static_cast<RoundImageButton*>(heading->children()[1].get())->onClicked = [window] { window->newCalendar(); };
 
     m_calendarList = content->addChild<Card>(6, 6, 6);
-    m_calendarList->setName("calendarList");
+    m_calendarList->setName("sidebar:calendars");
     m_calendarList->setLayoutHints({.fillWidth = true});
     m_calendarList->addChild<Column>();
 
     // Shown once there is a subscription; the main menu adds the first.
-    m_subscriptionHeading = addHeading(tr("Subscriptions"), "addSubscription");
-    m_subscriptionHeading->children()[0]->setName("subscriptionsHeading");
+    m_subscriptionHeading = addHeading(tr("Subscriptions"), "sidebar:addSubscription");
+    m_subscriptionHeading->children()[0]->setName("sidebar:subscriptionsHeading");
     static_cast<RoundImageButton*>(m_subscriptionHeading->children()[1].get())->onClicked = [window] {
         window->newSubscription();
     };
 
     m_subscriptionList = content->addChild<Card>(6, 6, 6);
-    m_subscriptionList->setName("subscriptionList");
+    m_subscriptionList->setName("sidebar:subscriptions");
     m_subscriptionList->setLayoutHints({.fillWidth = true});
     m_subscriptionList->addChild<Column>();
 

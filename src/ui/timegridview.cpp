@@ -181,7 +181,7 @@ public:
             m_hours.push_back(label);
         }
         m_preview = addChild<View>();
-        m_preview->setName("newEventPreview");
+        m_preview->setName("grid:newEvent");
         m_preview->setVisible(false);
         m_previewLabel = m_preview->addChild<Label>();
         m_previewLabel->setFontSize(Style::points(8));
@@ -349,7 +349,7 @@ TimeGridView::TimeGridView(CalendarWindow* window, int days)
     : m_window(window)
     , m_days(days)
 {
-    setName(days == 1 ? "dayView" : "weekView");
+    setName(days == 1 ? "view:day" : "view:week");
     if (days > 1) {
         for (int i = 0; i < days; ++i)
             m_headers.push_back(addChild<Header>(window, false));
@@ -362,7 +362,7 @@ TimeGridView::TimeGridView(CalendarWindow* window, int days)
     m_allDayLabel->setElide(Label::Elide::None);
     m_strip = addChild<Strip>(this);
     m_scroll = addChild<ScrollView>();
-    m_scroll->setName("hourGrid");
+    m_scroll->setName(days == 1 ? "day:hours" : "week:hours");
     m_scroll->setBottomCornerRadius(Theme::current().windowRadius);
     m_canvas = m_scroll->setContent<Canvas>(this);
 

@@ -57,6 +57,7 @@ public:
         , m_time(addChild<Label>(m_event.allDay ? std::string(tr("All day")) : m_event.startText))
         , m_location(addChild<Label>(m_event.location))
     {
+        setName("search:result");
         m_time->setFontSize(Style::points(8));
         m_time->setElide(Label::Elide::None);
         m_location->setFontSize(Style::points(8));
@@ -158,7 +159,7 @@ SearchResults::SearchResults(CalendarWindow* window)
     , m_scroll(addChild<ScrollView>())
     , m_empty(addChild<Label>(tr("No Events Found")))
 {
-    setName("searchResults");
+    setName("search:results");
     m_scroll->setBottomCornerRadius(Theme::current().windowRadius);
     m_list = m_scroll->setContent<Column>();
     m_list->setMargins({0, 6, 0, 6});
