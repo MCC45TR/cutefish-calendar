@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cutefish-calendar\n"
 "Report-Msgid-Bugs-To: https://github.com/cutefishos\n"
-"POT-Creation-Date: 2026-10-31 15:53+0800\n"
+"POT-Creation-Date: 2026-11-20 18:46+0800\n"
 "PO-Revision-Date: 2026-10-31 15:53+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -349,7 +349,7 @@ msgstr "최소화"
 msgid "Zoom"
 msgstr "확대/축소"
 
-#: src/ui/dialogs.cpp src/ui/eventdialog.cpp
+#: src/ui/dialogs.cpp
 msgid "Cancel"
 msgstr "취소"
 
@@ -513,10 +513,6 @@ msgid "Notes"
 msgstr "메모"
 
 #: src/ui/eventdialog.cpp
-msgid "Close"
-msgstr "닫기"
-
-#: src/ui/eventdialog.cpp
 msgid "Delete Event"
 msgstr "이벤트 삭제"
 
@@ -635,3 +631,6 @@ msgstr "이벤트;약속;일정;날짜;Events;Appointments;Schedule;Date;"
 #: cutefish-calendar-reminders.desktop
 msgid "Calendar Reminders"
 msgstr "캘린더 알림"
+
+#~ msgid "Close"
+#~ msgstr "닫기"

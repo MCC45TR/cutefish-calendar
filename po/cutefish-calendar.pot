@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cutefish-calendar\n"
 "Report-Msgid-Bugs-To: https://github.com/cutefishos\n"
-"POT-Creation-Date: 2026-10-31 15:53+0800\n"
+"POT-Creation-Date: 2026-11-20 18:46+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -353,7 +353,7 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: src/ui/dialogs.cpp src/ui/eventdialog.cpp
+#: src/ui/dialogs.cpp
 msgid "Cancel"
 msgstr ""
 
@@ -515,10 +515,6 @@ msgstr ""
 
 #: src/ui/eventdialog.cpp
 msgid "Notes"
-msgstr ""
-
-#: src/ui/eventdialog.cpp
-msgid "Close"
 msgstr ""
 
 #: src/ui/eventdialog.cpp

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cutefish-calendar\n"
 "Report-Msgid-Bugs-To: https://github.com/cutefishos\n"
-"POT-Creation-Date: 2026-10-31 15:53+0800\n"
+"POT-Creation-Date: 2026-11-20 18:46+0800\n"
 "PO-Revision-Date: 2026-10-31 15:53+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -352,7 +352,7 @@ msgstr "Riduci a icona"
 msgid "Zoom"
 msgstr "Zoom"
 
-#: src/ui/dialogs.cpp src/ui/eventdialog.cpp
+#: src/ui/dialogs.cpp
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -517,10 +517,6 @@ msgid "Notes"
 msgstr "Note"
 
 #: src/ui/eventdialog.cpp
-msgid "Close"
-msgstr "Chiudi"
-
-#: src/ui/eventdialog.cpp
 msgid "Delete Event"
 msgstr "Elimina evento"
 
@@ -647,3 +643,6 @@ msgstr "Eventi;Appuntamenti;Agenda;Programma;Data;Calendario;"
 #: cutefish-calendar-reminders.desktop
 msgid "Calendar Reminders"
 msgstr "Promemoria di Calendario"
+
+#~ msgid "Close"
+#~ msgstr "Chiudi"
