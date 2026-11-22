@@ -195,6 +195,10 @@ void CalendarRoot::paint(Painter& painter)
 {
     const double x = CalendarWindow::SidebarWidth * m_window->sidebarReveal();
     painter.fillRect({x, 0, geometry().width - x, geometry().height}, Theme::current().secondBackground);
+    if (m_window->sidebarReveal() > 0) {
+        const double line = 1 / painter.scale();
+        painter.fillRoundedRect({x - line, 0, line, geometry().height}, 0, Style::separatorColor());
+    }
 }
 
 bool CalendarRoot::canDrop(const DropOffer& offer) const
