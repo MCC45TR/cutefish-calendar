@@ -9,6 +9,7 @@
 
 #include <ui/combo_box.h>
 #include <ui/keys.h>
+#include <ui/row_combo_box.h>
 #include <ui/text_field.h>
 #include <ui/theme.h>
 
@@ -284,13 +285,12 @@ TEST_F(CalendarsTest, SettingsChangeTheWeek)
     driver.chooseMenuItem("Calendar", "Settings…");
     std::unique_ptr<TestDriver> settings = dialogOver(driver);
     ASSERT_TRUE(settings);
-    auto* weekStart = settings->find<ComboBox>("settings:weekStart");
+    auto* weekStart = settings->find<RowComboBox>("settings:weekStart");
     ASSERT_TRUE(weekStart);
-    ASSERT_EQ(weekStart->items().size(), 4u);
-    EXPECT_EQ(weekStart->items()[0], "System Default");
-    EXPECT_EQ(weekStart->items()[2], "Monday");
+    ASSERT_EQ(weekStart->count(), 4);
     EXPECT_EQ(weekStart->currentIndex(), 0);
-    choose(*settings, "settings:weekStart", 2);
+    settings->click("settings:weekStart");
+    settings->choosePopupItem("Monday");
     EXPECT_EQ(m_model->weekStart(), 1);
 
     ASSERT_TRUE(settings->shows("settings:weekNumbers"));

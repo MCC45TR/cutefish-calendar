@@ -14,6 +14,7 @@
 #include <ui/cell_layout.h>
 #include <ui/color_provider.h>
 #include <ui/combo_box.h>
+#include <ui/row_combo_box.h>
 #include <ui/dialog_window.h>
 #include <ui/drop_down_popup.h>
 #include <ui/icon.h>
@@ -792,10 +793,17 @@ void FormCard::layout()
         View* controls = row->children()[1].get();
         // Both centred by anchors.
         const SizeF size = controls->sizeHint();
-        controls->setGeometry({width - 14 - size.width, Style::centred(height, size.height), size.width, size.height});
+        // A choice at the end reaches past the edge so its chevron ends where a switch does.
+        double overhang = 0;
+        if (!controls->children().empty()) {
+            if (const auto* box = dynamic_cast<const RowComboBox*>(controls->children().back().get()))
+                overhang = box->trailingOverhang();
+        }
+        controls->setGeometry({width - 14 - size.width + overhang, Style::centred(height, size.height), size.width,
+                               size.height});
         const double labelHeight = label->sizeHint().height;
-        label->setGeometry({14, Style::centred(height, labelHeight), std::max(0.0, width - 28 - size.width - 8),
-                            labelHeight});
+        label->setGeometry({14, Style::centred(height, labelHeight),
+                            std::max(0.0, width - 28 - size.width - 8 + overhang), labelHeight});
     }
 }
 
@@ -829,9 +837,8 @@ SettingsDialog::SettingsDialog(Window* parent, CalendarModel* model)
     std::vector<std::string> names;
     for (int day : weekStarts)
         names.push_back(day == 0 ? std::string(tr("System Default")) : LocaleData::dayName(day % 7));
-    ComboBox* weekStart = card->addRow(tr("Week Starts On"))->addChild<ComboBox>(names);
+    RowComboBox* weekStart = card->addRow(tr("Week Starts On"))->addChild<RowComboBox>(names);
     weekStart->setName("settings:weekStart");
-    weekStart->setLayoutHints({.preferredWidth = 180});
     weekStart->setCurrentIndex(std::max(0, int(std::find(weekStarts.begin(), weekStarts.end(), model->weekStart())
                                                - weekStarts.begin()) % int(weekStarts.size())));
     weekStart->onActivated = [model](int index) { model->setWeekStart(weekStarts[size_t(index)]); };
