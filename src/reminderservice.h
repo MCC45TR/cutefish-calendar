@@ -27,8 +27,9 @@ public:
     ReminderService(const ReminderService&) = delete;
     ReminderService& operator=(const ReminderService&) = delete;
 
-private:
     void check();
+
+private:
     void notify(const Reminder& reminder);
     void actionInvoked(uint32_t id, const std::string& key);
 

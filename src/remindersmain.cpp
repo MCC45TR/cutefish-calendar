@@ -23,6 +23,19 @@ int main()
     cutefish::base::SessionLanguage language(bus);
     CalendarStore store;
     ReminderService service(&store, bus);
+
+    // A wake from suspend checks at once rather than when the timer, which
+    // stood still meanwhile, runs out.
+    cutefish::base::dbus::Match sleep;
+    if (cutefish::base::dbus::Connection* system = cutefish::base::dbus::Connection::system(&loop)) {
+        cutefish::base::dbus::Proxy login(system, "org.freedesktop.login1", "/org/freedesktop/login1",
+                                          "org.freedesktop.login1.Manager");
+        sleep = login.onSignal("PrepareForSleep", [&service](const cutefish::base::dbus::Message& message) {
+            bool sleeping = true;
+            if (message.read(sleeping) && !sleeping)
+                service.check();
+        });
+    }
     store.loadAsync();
     return loop.run();
 }
